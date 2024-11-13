@@ -67,7 +67,7 @@
                                         <hr>
                                         <li class="d-flex justify-content-between" id="shipping-info">
                                             <span>Harga </span>
-                                            <span>IDR {{number_format($order->paket->harga)}}</span>
+                                            <span>IDR {{number_format($order->harga)}}</span>
                                         </li>
                                         <hr>
                                         

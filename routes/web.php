@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminVideoController;
 use App\Http\Controllers\FreeTryoutController;
 use App\Http\Controllers\AdminMateriController;
 use App\Http\Controllers\AdminTryoutController;
+use App\Http\Controllers\DiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('payment/{id}', [OrderController::class, 'payment']);
     Route::get('admin-beli', [OrderController::class, 'history']);
     Route::resource('admin-paket', OrderController::class);
+    Route::resource('admin-diskon', DiscountController::class);
     
     //Admin Materi
     Route::post('admin-materi', [AdminMateriController::class, 'store'])->middleware('checkrole:admin')->name('admin-materi.store');

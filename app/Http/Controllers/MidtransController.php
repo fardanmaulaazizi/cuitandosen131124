@@ -17,7 +17,7 @@ class MidtransController extends Controller
         
         $params = [
             'transaction_details' => [
-                'order_id' => $order->id,
+                'order_id' =>uniqid(),
                 'gross_amount' => $order->harga,
             ],
             'customer_details' => [

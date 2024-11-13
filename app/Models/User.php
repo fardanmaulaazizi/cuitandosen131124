@@ -6,6 +6,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Nilai;
 use App\Models\Order;
+use App\Models\Discount;
 use App\Models\NilaiSesi;
 use App\Models\TryoutSession;
 use Laravel\Sanctum\HasApiTokens;
@@ -94,5 +95,10 @@ class User extends Authenticatable
     public function nilai_sesis(): HasMany
     {
         return $this->hasMany(NilaiSesi::class);
+    }
+
+    public function diskon(): HasMany
+    {
+        return $this->hasMany(Discount::class);
     }
 }

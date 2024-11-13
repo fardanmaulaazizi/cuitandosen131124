@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Paket;
+use App\Models\Discount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MidtransController;
 
@@ -42,7 +43,19 @@ class OrderController extends Controller
         $order = new Order;
         $order->paket_id = $request->paket_id;
         $order->user_id = auth()->user()->id;
-        $order->harga = $paket->harga;
+        if($request->discount_id) {
+            $discount = Discount::findorfail($request->discount_id);
+            $discount->is_used = true;
+            $discount->save();
+            
+            if($discount->discount_type == 'nominal') {
+                $order->harga = $paket->harga - $discount->value;
+            }else{
+                $order->harga = $paket->harga - ($paket->harga * $discount->value / 100);
+            }
+        }else{
+            $order->harga = $paket->harga;
+        }
         $order->limit_payment = Carbon::now()->addHours(24);
         $order->save();
         
@@ -57,8 +70,16 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $paket = Paket::findorfail($id);
-        
-        return view('admin.beli_paket.show', compact('paket'));
+        $discounts = Discount::where('paket_id', $paket->id)
+        ->where('user_id', auth()->user()->id)->orWhere('is_all', true)
+        ->when(request()->input('periode_type') == 'time-based', function ($query) {
+            $query->whereDate('start_date', '<=', Carbon::today())
+                  ->whereDate('end_date', '>=', Carbon::today());
+        })
+        ->where('is_active', true)
+        ->where('is_used', false)
+        ->get();
+        return view('admin.beli_paket.show', compact('paket', 'discounts'));
     }
     
     /**

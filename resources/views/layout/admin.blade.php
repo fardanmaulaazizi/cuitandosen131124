@@ -72,6 +72,14 @@
               <span class="hide-menu">Atur Paket</span>
             </a>
           </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link {{ Str::startsWith(request()->path(), ['admin-diskon']) ? 'active' : '' }}" href="{{ url('admin-diskon') }}" aria-expanded="false">
+              <span>
+                <i class="ti ti-tag"></i>
+              </span>
+              <span class="hide-menu">Atur Diskon</span>
+            </a>
+          </li>
           @endif
           
           <li class="nav-small-cap">
