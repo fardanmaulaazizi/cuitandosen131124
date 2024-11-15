@@ -4,29 +4,30 @@
 <div class="container-fluid">
     <div class="container-fluid">
         <div class="d-flex justify-content-between">
-            <h3>Tambah Diskon</h3>
+            <h3>Tambah Diskon Setelah Pembelian</h3>
         </div>
         <div class="card">
             <div class="card-body">
-                <form action="/admin-diskon" method="post" enctype="multipart/form-data">
+                <form action="/admin-diskon-setelah-pembelian" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama Voucher Discount</label>
                         <input type="text" class="form-control" id="nama" name="name" placeholder="Voucher Diskon" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="user" class="form-label">Pengguna</label>
-                        <select class="form-select" name="user_id" id="user">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <label for="paket_buyed" class="form-label">Paket yang dibeli</label>
+                        <select class="form-select" name="paket_buyed" id="paket_buyed">
+                            @foreach ($pakets_buyed as $paket)
+                                <option value="{{ $paket->id }}">{{ $paket->nama }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="paket" class="form-label">Paket</label>
-                        <select class="form-select" name="paket_id" id="paket">
+                        <label for="paket_discount" class="form-label">Paket yang didiskon</label>
+                        <select class="form-select" name="paket_discount" id="paket_discount">
                             <option value="0">Semua</option>
-                            @foreach ($pakets as $paket)
+                            @foreach ($pakets_discount as $paket)
                                 <option value="{{ $paket->id }}">{{ $paket->nama }}</option>
                             @endforeach
                         </select>

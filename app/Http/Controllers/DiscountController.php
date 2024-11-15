@@ -6,16 +6,16 @@ use App\Models\User;
 use App\Models\Paket;
 use App\Models\Discount;
 use Illuminate\Http\Request;
-use App\Models\DiscountAfterBuy;
+use App\Models\DiscountFromBuying;
 
 class DiscountController extends Controller
 {
     public function index()
     {
         $regularDiscounts = Discount::all();
-        // $afterBuyDiscounts = DiscountAfterBuy::all();
-
-        return view('admin.atur_diskon.index', compact('regularDiscounts'));
+        $buyingDiscounts = DiscountFromBuying::with(['paketBuyed', 'paketDiscount'])->get();
+        // @dd($buyingDiscounts);
+        return view('admin.atur_diskon.index', compact('regularDiscounts', 'buyingDiscounts'));
     }
 
     public function create(){
@@ -66,8 +66,9 @@ class DiscountController extends Controller
         $discount->user_id = $request->user_id;
         if($request->paket_id == 0){
             $discount->is_all = true;
-            $discount->paket_id = Paket::first()->id;
+            $discount->paket_id = null;
         }else{
+            $discount->is_all = false;
             $discount->paket_id = $request->paket_id;
         }
         $discount->periode_type = $request->periode_type;

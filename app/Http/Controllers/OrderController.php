@@ -70,15 +70,25 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $paket = Paket::findorfail($id);
-        $discounts = Discount::where('paket_id', $paket->id)
-        ->where('user_id', auth()->user()->id)->orWhere('is_all', true)
-        ->when(request()->input('periode_type') == 'time-based', function ($query) {
-            $query->whereDate('start_date', '<=', Carbon::today())
-                  ->whereDate('end_date', '>=', Carbon::today());
-        })
+        $discountsTimeBased = Discount::where('paket_id', $paket->id)
+        ->where('periode_type', 'time-based')
+        ->where('is_all', false)
+        ->where('start_date', '<=', Carbon::now())
+        ->where('end_date', '>=', Carbon::now())
         ->where('is_active', true)
         ->where('is_used', false)
         ->get();
+        $discountsNominal = Discount::where('paket_id', $paket->id)
+        ->where('periode_type', 'nominal')
+        ->where('is_all', false)
+        ->where('is_active', true)
+        ->where('is_used', false)
+        ->get();
+        $discountsAllProducts = Discount::where('is_all', true)
+        ->where('is_active', true)
+        ->where('is_used', false)
+        ->get();
+        $discounts = $discountsTimeBased->merge($discountsNominal)->merge($discountsAllProducts);
         return view('admin.beli_paket.show', compact('paket', 'discounts'));
     }
     

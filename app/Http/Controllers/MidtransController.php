@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Discount;
 use Illuminate\Http\Request;
+use App\Models\DiscountFromBuying;
 
 class MidtransController extends Controller
 {
     public function generateSnapToken(Order $order, Request $request)
     {
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        \Midtrans\Config::$isProduction = true;
+        \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
         
         $params = [
             'transaction_details' => [
-                'order_id' =>uniqid(),
+                'order_id' =>$order->id,
                 'gross_amount' => $order->harga,
             ],
             'customer_details' => [
@@ -81,7 +83,30 @@ class MidtransController extends Controller
                 $order->save();
             } 
         }
-        //dd($paket);
+
+        if(DiscountFromBuying::where('paket_buyed', $order->paket_id)->exists()){
+            $discountFromBuying = DiscountFromBuying::where('paket_buyed', $order->paket_id)->first();
+            $discount = new Discount;
+            $discount->name = $discountFromBuying->name;
+            $discount->user_id = $order->user_id;
+            if($discountFromBuying->is_all == true){
+                $discount->is_all = true;
+                $discount->paket_id = null;
+            }else{
+                $discount->is_all = false;
+                $discount->paket_id = $discountFromBuying->paket_discount;
+            }
+            $discount->periode_type = $discountFromBuying->periode_type;
+            $discount->discount_type = $discountFromBuying->discount_type;
+            if($discountFromBuying->periode_type == 'time-based'){
+                $discount->start_date = $discountFromBuying->start_date;
+                $discount->end_date = $discountFromBuying->end_date;
+            }
+            $discount->is_active = true;
+            $discount->value = $discountFromBuying->value;
+            $discount->is_used = false;
+            $discount->save();
+        }
         
     }
     

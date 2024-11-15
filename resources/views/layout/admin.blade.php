@@ -24,8 +24,8 @@
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   
   <script type="text/javascript"
-  src="https://app.midtrans.com/snap/snap.js"
-  data-client-key="Mid-client-SJTuL7wrV6VOX2GU"></script>
+  src="https://app.sandbox.midtrans.com/snap/snap.js"
+  data-client-key="SB-Mid-client-STC0kPwemJUP83Kl"></script>
 </head>
 
 <body class="" data-bs-theme="{{auth()->user()->theme}}">

@@ -20,6 +20,7 @@ class DiscountSeeder extends Seeder
             'periode_type' => 'one-time',
             'discount_type' => 'percentage',
             'value' => 10,
+            'is_all' => true,
             'is_used' => false,
             'is_active' => true
         ]);
@@ -33,6 +34,7 @@ class DiscountSeeder extends Seeder
             'start_date' => now(),
             'end_date' => now()->addYear(),
             'value' => 10000,
+            'is_all' => false,
             'is_used' => false,
             'is_active' => true
         ]);
