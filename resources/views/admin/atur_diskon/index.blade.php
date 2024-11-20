@@ -15,7 +15,6 @@
                             <table class="table table-hover ">
                                 <thead>
                                   <tr>
-                                    <th scope="col">No</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">User</th>
                                     <th scope="col">Paket</th>
@@ -28,7 +27,6 @@
                                 <tbody>
                                   @foreach ($regularDiscounts as $discount)
                                     <tr>
-                                        <td scope="row">{{$loop->iteration}}</td>
                                         <td>{{ Str::limit($discount->name, 20, '...') }}</td>
                                         <td>{{ Str::limit($discount->user->name, 20, '...') }}</td>
                                         <td>
@@ -58,6 +56,46 @@
                                         <td class="d-flex gap-2">
                                             <a href="/admin-diskon/{{ $discount->id}}/edit" class="btn btn-primary"><i class="fas fa-cog"></i> Atur</a>
                                             <form action="/admin-diskon/{{ $discount->id}}" method="POST" onsubmit="return confirm('Yakin Hapus Data?')" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                  @foreach ($allUserDiscount as $discount)
+                                    <tr>
+                                        <td>{{ Str::limit($discount->name, 20, '...') }}</td>
+                                        <td>Semua User</td>
+                                        <td>
+                                            @if($discount->is_all)
+                                                Semua
+                                            @else
+                                                {{ Str::limit($discount->paket_name, 20, '...') }}
+                                            @endif
+                                        </td>
+                                        @if ($discount->periode_type === "one-time")
+                                            <td>Tanpa Batasan</td>
+                                        @else
+                                            <td>{{ $discount->start_date }} - {{ $discount->end_date }}</td>
+                                        @endif
+                                        @if ($discount->is_used == false)
+                                            <td>Belum Digunakan</td>
+                                        @else
+                                            <td>Sudah Digunakan</td>
+                                        @endif
+                                        <td>
+                                            @if ($discount->discount_type == "percentage")
+                                                {{ $discount->value }}%
+                                            @else
+                                                Rp. {{ number_format($discount->value) }}
+                                            @endif
+                                        </td>
+                                        <td class="d-flex gap-2">
+                                            <a href="/admin-diskon/{{ $discount->id}}/edit" class="btn btn-primary"><i class="fas fa-cog"></i> Atur</a>
+                                            <form action="/admin-diskon-semua-user/{{ $discount->user_all}}" method="POST" onsubmit="return confirm('Yakin Hapus Data?')" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">

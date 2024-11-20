@@ -71,6 +71,7 @@ class OrderController extends Controller
     {
         $paket = Paket::findorfail($id);
         $discountsTimeBased = Discount::where('paket_id', $paket->id)
+        ->where('user_id', auth()->user()->id)
         ->where('periode_type', 'time-based')
         ->where('is_all', false)
         ->where('start_date', '<=', Carbon::now())
@@ -79,12 +80,14 @@ class OrderController extends Controller
         ->where('is_used', false)
         ->get();
         $discountsNominal = Discount::where('paket_id', $paket->id)
-        ->where('periode_type', 'nominal')
+        ->where('user_id', auth()->user()->id)
+        ->where('periode_type', 'one-time')
         ->where('is_all', false)
         ->where('is_active', true)
         ->where('is_used', false)
         ->get();
         $discountsAllProducts = Discount::where('is_all', true)
+        ->where('user_id', auth()->user()->id)
         ->where('is_active', true)
         ->where('is_used', false)
         ->get();

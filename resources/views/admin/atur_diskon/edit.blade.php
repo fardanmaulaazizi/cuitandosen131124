@@ -17,13 +17,21 @@
                     <div class="mb-3">
                         <label for="user" class="form-label">Pengguna</label>
                         <select  class="form-select" name="user_id" id="user">
-                            @foreach ($users as $user)
-                                @if ($user->id == $discount->user_id)
-                                    <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
-                                @else
+                            @if($discount->user_all != null)
+                                <option value="semua" selected>Semua</option>
+                                @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endif
-                            @endforeach
+                                @endforeach
+                            @else
+                                <option value="semua" >Semua</option>
+                                @foreach ($users as $user)
+                                    @if ($user->id == $discount->user_id)
+                                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                    @else
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     <div class="mb-3">

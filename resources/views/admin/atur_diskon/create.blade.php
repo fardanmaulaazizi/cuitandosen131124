@@ -17,6 +17,7 @@
                     <div class="mb-3">
                         <label for="user" class="form-label">Pengguna</label>
                         <select class="form-select" name="user_id" id="user">
+                            <option value="semua">Semua</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach

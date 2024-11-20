@@ -90,6 +90,7 @@ Route::middleware(['auth', 'checkrole:admin'])->group(function () {
     Route::get('admin-video/creates/{id}', [AdminVideoController::class, 'creates']);
 
     Route::resource('admin-diskon', DiscountController::class);
+    Route::delete('admin-diskon-semua-user/{id}', [DiscountController::class, 'destroyDiscountAllUser']);
     Route::resource('admin-diskon-setelah-pembelian', DiscountFromBuyingController::class);
 });
 
