@@ -13,7 +13,6 @@
                         <div class="row mt-3 soal-soal {{$key != 0 ? 'd-none' : ''}}" id="soal-{{$key}}">
                             <div class="d-flex justify-content-between mb-5">
                                 <h5><b>Soal {{$loop->iteration}}</b> <span class="span-kategori">{{ucwords($so->kategori)}}</span></h5>
-                                
                             </div>
                             <hr>
                             <div class="col-md-12">
@@ -30,7 +29,24 @@
                             </div>                            
                             @endforeach
                             <hr>
+                            <div class="d-flex justify-content-between" id="containerPrevNext">
+                                <!-- Tombol Previous, hanya muncul jika bukan soal pertama -->
+                                @if($key > 0)
+                                    <div class="text-start">
+                                        <button class="btn btn-secondary prev-soal" data-current="{{$key}}" data-total="{{ count($session->tryout->soals) }}" id="prev-{{$key}}">Previous</button>
+                                    </div>
+                                @endif
+                                
+                                <!-- Tombol Next, hanya muncul jika bukan soal terakhir -->
+                                @if($key < count($session->tryout->soals) - 1)
+                                    <div class="ml-auto text-end">
+                                        <button class="btn btn-primary next-soal" data-current="{{$key}}" data-total="{{ count($session->tryout->soals) }}" id="next-{{$key}}">Next</button>
+                                    </div>
+                                @endif
+                            </div>
+                            
                         </div>
+                        
                         
                         @endforeach
                     </div>
@@ -68,6 +84,7 @@
                 <div class="card" {{-- style="position: sticky; top:80px" --}}>
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center;">Waktu Tersisa</h5>
+                        dsajkdashkjdsahjk
                         <p id="countdown" style="font-size: 40px; font-weight: bold; text-align: center;"></p>
                     </div>
                 </div>
@@ -110,6 +127,69 @@
 @endsection
 
 @section('script')
+<script>
+$(document).ready(function() {
+    $(document).on('click', '.next-soal', function() {
+        var current = $(this).data('current');
+        var total = $(this).data('total');
+
+
+        $('#soal-' + current).addClass('d-none');
+
+        var next = current + 1;
+
+        if (next < total) {
+
+            $('#soal-' + next).removeClass('d-none');
+        }
+
+
+        if (next === total - 1) {
+            $('#next-' + next).addClass('d-none');
+        }
+
+        $('#prev-' + next).removeClass('d-none');
+    });
+
+    $(document).on('click', '.prev-soal', function() {
+        var current = $(this).data('current');
+        var total = $(this).data('total');
+
+        $('#soal-' + current).addClass('d-none');
+
+        var prev = current - 1;
+
+        if (prev >= 0) {
+            $('#soal-' + prev).removeClass('d-none');
+        }
+
+
+        if (prev === 0) {
+            $('#prev-' + prev).addClass('d-none');
+
+        }
+
+
+        $('#next-' + prev).removeClass('d-none');
+    });
+
+
+    $('.soal-soal').each(function(index) {
+        if (index === 0) {
+            $('#prev-' + index).addClass('d-none');  
+            $('#containerPrevNext').removeClass('justify-content-between');
+            $('#containerPrevNext').addClass('justify-content-end');
+        }
+
+        if (index === $('.soal-soal').length - 1) {
+            $('#next-' + index).addClass('d-none'); 
+        }
+    });
+});
+
+
+
+</script>
 <script>
     $('.button-soal').on('click', function(){
         if ($(this).hasClass('button-soal')) {

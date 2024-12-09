@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminMateriController;
 use App\Http\Controllers\AdminTryoutController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\DiscountFromBuyingController;
+use App\Mail\DemoMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,17 @@ Route::middleware(['auth'])->group(function () {
     //Admin Akun
     Route::put('ganti-password/{id}', [AdminAkunController::class, 'gantiPassword']);
     Route::resource('admin-akun', AdminAkunController::class);
+});
+
+Route::get('/test', function(){
+    $mailData = [
+        'title' => 'mail from me',
+        'body' => 'this is for testing'
+    ];
+
+    Mail::to('fardanmaula114@gmail.com')->send(new DemoMail($mailData));
+
+    dd('email send succesfully');
 });
 
 Auth::routes();
