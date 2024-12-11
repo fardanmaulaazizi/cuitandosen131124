@@ -1,18 +1,21 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Paket;
+use App\Mail\DemoMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\AdminAkunController;
 use App\Http\Controllers\AturPaketController;
 use App\Http\Controllers\AdminVideoController;
 use App\Http\Controllers\FreeTryoutController;
 use App\Http\Controllers\AdminMateriController;
 use App\Http\Controllers\AdminTryoutController;
-use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\AdminDaftarNilaiController;
 use App\Http\Controllers\DiscountFromBuyingController;
-use App\Mail\DemoMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +96,12 @@ Route::middleware(['auth', 'checkrole:admin'])->group(function () {
     Route::resource('admin-diskon', DiscountController::class);
     Route::delete('admin-diskon-semua-user/{id}', [DiscountController::class, 'destroyDiscountAllUser']);
     Route::resource('admin-diskon-setelah-pembelian', DiscountFromBuyingController::class);
+
+    //Admin Daftar Nilai 
+    Route::get('admin-daftar-nilai', [AdminDaftarNilaiController::class, 'index']);
+    Route::get('admin-daftar-nilai/tryout/{id}', [AdminDaftarNilaiController::class, 'tryout']);
+    Route::get('admin-daftar-nilai/tryout/list/{id}', [AdminDaftarNilaiController::class, 'listHasil']);    
+    Route::get('admin-hasil-test/{id}', [AdminTryoutController::class, 'hasilTestAdmin']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -128,7 +137,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin-tryouts/{id}/{token}', [AdminTryoutController::class, 'mulai']);
     Route::get('admin-basic-tryout/list-hasil/{id}', [AdminTryoutController::class, 'listHasil']);
     Route::get('admin-tryout/hasil-test/{id}', [AdminTryoutController::class, 'hasilTest']);
-    Route::get('admin-tryout/hasil-test-admin/{id}', [AdminTryoutController::class, 'hasilTestAdmin']);
+    // Route::get('admin-tryout/hasil-test-admin/{id}', [AdminTryoutController::class, 'hasilTestAdmin']);
     Route::get('admin-tryout/hasil-test-sesi/{id}', [AdminTryoutController::class, 'hasilTestSesi']);
     Route::post('admin-tryout', [AdminTryoutController::class, 'store'])->middleware('checkrole:admin')->name('admin-tryout.store');
     Route::get('admin-tryout/{id}/edit', [AdminTryoutController::class, 'edit'])->middleware('checkrole:admin')->name('admin-tryout.edit');
@@ -160,6 +169,8 @@ Route::middleware(['auth'])->group(function () {
     //Admin Akun
     Route::put('ganti-password/{id}', [AdminAkunController::class, 'gantiPassword']);
     Route::resource('admin-akun', AdminAkunController::class);
+
+
 });
 
 Route::get('/test', function(){
@@ -177,7 +188,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'admin'])->name('home');
 
-use Carbon\Carbon;
+
 
 Route::get('/remaining-time', function (Illuminate\Http\Request $request) {
     // Get start time and max duration from the request parameters

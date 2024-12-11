@@ -6,6 +6,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cuitandosen</title>
+  {{-- Datatables --}}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+
   <link rel="shortcut icon" type="image/png" href="{{asset('assets/images/logos/favicon.png')}}" />
   <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}" />
   <!-- Dropify -->
@@ -22,10 +26,12 @@
 
   <!-- Video.js -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-  
+
   <script type="text/javascript"
   src="https://app.sandbox.midtrans.com/snap/snap.js"
   data-client-key="SB-Mid-client-STC0kPwemJUP83Kl"></script>
+
+  <script></script>
 </head>
 
 <body class="" data-bs-theme="{{auth()->user()->theme}}">
@@ -72,12 +78,21 @@
               <span class="hide-menu">Atur Paket</span>
             </a>
           </li>
+          
           <li class="sidebar-item">
             <a class="sidebar-link {{ Str::startsWith(request()->path(), ['admin-diskon']) ? 'active' : '' }}" href="{{ url('admin-diskon') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-tag"></i>
               </span>
               <span class="hide-menu">Atur Diskon</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link {{ Str::startsWith(request()->path(), ['admin-daftar-nilai']) ? 'active' : '' }}" href="{{ url('admin-daftar-nilai') }}" aria-expanded="false">
+              <span>
+                <i class="ti ti-list"></i>
+              </span>
+              <span class="hide-menu">Daftar Nilai</span>
             </a>
           </li>
           @endif

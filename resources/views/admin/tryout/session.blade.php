@@ -84,7 +84,6 @@
                 <div class="card" {{-- style="position: sticky; top:80px" --}}>
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center;">Waktu Tersisa</h5>
-                        dsajkdashkjdsahjk
                         <p id="countdown" style="font-size: 40px; font-weight: bold; text-align: center;"></p>
                     </div>
                 </div>
